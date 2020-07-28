@@ -6,16 +6,16 @@ const Util = imports.misc.util;
 const ExtensionPath = imports.misc.extensionUtils.getCurrentExtension().path;
 
 let text, button;
-let python_script = ExtensionPath + '/ShowTime';
+let showtime_script = ExtensionPath + '/showtime.js';
 
 function init() {
-     Util.spawnCommandLine(" /usr/bin/python3 " + python_script);
+     Util.spawnCommandLine(" /usr/bin/gjs " + showtime_script);
 }
 
 function enable() {
-    
+
 }
 
 function disable() {
-    
+
 }

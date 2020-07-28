@@ -1,1 +1,7 @@
-{"name": "ShowTime", "description": "Show Time Widget original from Budgie Desktop ShowTimePlugin", "uuid": "showtime@xenlism.github.io", "shell-version": ["3.28.1"]}
+{
+    "name": "Showtime",
+    "uuid": "showtime@xenlism.github.io",
+    "shell-version": ["3.36","3.34"],
+    "description": "Date & Clock Desktop Widget",
+    "version": 2
+}
