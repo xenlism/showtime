@@ -3,5 +3,6 @@
     "uuid": "showtime@xenlism.github.io",
     "shell-version": ["3.36","3.34"],
     "description": "Date & Clock Desktop Widget",
+    "settings-schema": "org.gnome.shell.extensions.showtime",
     "version": 2
 }

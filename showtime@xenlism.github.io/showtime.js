@@ -1,5 +1,6 @@
 const GObject = imports.gi;
 const Gio   = imports.gi.Gio;
+imports.gi.versions.Gtk = '3.0';
 const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
 const Pango = imports.gi.Pango;
@@ -9,7 +10,9 @@ const Lang  = imports.lang;
 const GLib  = imports.gi.GLib;
 const Wnck = imports.gi.Wnck;
 
-const TimeAM = false;
+//const settings = new Gio.Settings({ settings_id: 'gnome-shell-extension-showtime' });
+
+
 let timeout;
 Gtk.init(null);
 let dayweek = ["Su","Mo","Tu","We","Th","Fr","Sa"];
@@ -26,6 +29,30 @@ function getAppFileInfo() {
 }
 const path = getAppFileInfo()[1];
 imports.searchPath.push(path);
+
+
+function getSettings() {
+  let GioSSS = Gio.SettingsSchemaSource;
+  let schemaSource = GioSSS.new_from_directory(
+    path + "/schemas",
+    GioSSS.get_default(),
+    false
+  );
+  let schemaObj = schemaSource.lookup(
+    'org.gnome.shell.extensions.showtime', true);
+  if (!schemaObj) {
+    throw new Error('cannot find schemas');
+  }
+  return new Gio.Settings({ settings_schema : schemaObj });
+}
+let settings = getSettings();
+let setting_time_am = settings.get_boolean("time-am");
+let setting_position_x = settings.get_int("time-position-x");
+let setting_position_y = settings.get_int("time-position-y");
+let setting_date_color = settings.get_string("time-date-color");
+let setting_clock_color = settings.get_string("time-clock-color");
+let setting_date_font = settings.get_string("time-date-font");
+let setting_clock_font = settings.get_string("time-clock-font");
 
 
 let win = new Gtk.Window();
@@ -47,9 +74,10 @@ let win = new Gtk.Window();
             print("window width" + win.get_size()[0]);
             if (visual && screen.is_composited()) { win.set_visual(visual); }
             win.set_app_paintable(true);
+
         let xposition = ((screen.get_width()/2) - (win.get_size()[0]/2));
         let yposition = (screen.get_height()/2) - (win.get_size()[1]/2);
-        win.move(xposition,yposition);
+        win.move(setting_position_x,setting_position_y);
         win.wrapevbox = new Gtk.EventBox();
         win.timegrid = new Gtk.Grid({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
         win.texttopleft = new Gtk.Label({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
@@ -65,6 +93,7 @@ let win = new Gtk.Window();
         win.textmidright.set_name("time-text-midright");
         win.textbottomleft.set_name("time-text-bottomleft");
         win.textbottomright.set_name("time-text-bottomright");
+
         win.texttopleft.get_style_context().add_class("time-text-topleft");
         win.texttopright.get_style_context().add_class("time-text-topright");
         win.textmidleft.get_style_context().add_class("time-text-midleft");
@@ -83,6 +112,7 @@ let win = new Gtk.Window();
         win.textbottomleft.get_style_context().add_provider(css, 0);
         win.textbottomright.get_style_context().add_provider(css, 0);
 
+
         win.set_tooltip_text("SUPER + Drag for Move Widget Position.");
         win.wrapevbox.add(win.timegrid);
         win.timegrid.add(win.texttopleft);
@@ -96,12 +126,20 @@ let win = new Gtk.Window();
 
   win.textsetTime = function(val) {
         let now = GLib.DateTime.new_now_local();
+        win.texttopright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + now.format("%H") + "</span>");
+        win.textmidright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + now.format("%M") + "</span>");
+        win.textbottomright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + now.format("%S") + "</span>");
+        win.texttopleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + dayweek[parseInt(now.format("%w"))] + "</span>");
+        win.textmidleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + now.format("%m") + "</span>");
+        win.textbottomleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + now.format("%d") + "</span>");
+        /*
         win.texttopright.set_text(now.format("%H"));
         win.textmidright.set_text(now.format("%M"));
         win.textbottomright.set_text(now.format("%S"));
         win.texttopleft.set_text(dayweek[parseInt(now.format("%w"))]);
         win.textmidleft.set_text(now.format("%m"));
         win.textbottomleft.set_text(now.format("%d"));
+        */
         return true;
   }
  win.getposition = function(val) {
@@ -127,6 +165,8 @@ let win = new Gtk.Window();
       print("Desktop Mode");
       print("Changeed Position");
       let win_position = win.get_position();
+      settings.set_int("time-position-x",win_position[0]);
+      settings.set_int("time-position-y",win_position[1]);
       print(win_position[0],win_position[1]);
     }
   }
@@ -138,6 +178,11 @@ let win = new Gtk.Window();
   win.wrapevbox.connect("button-press-event", win.testClick.bind(this));
   win.wrapevbox.connect("enter-notify-event", win.toggleWindowNORMALMode.bind(this));
   win.wrapevbox.connect("leave-notify-event", win.toggleWindowDESKTOPMode.bind(this));
+  settings.connect('changed::time-am', () => { setting_time_am = settings.get_boolean("time-am"); });
+  settings.connect('changed::time-date-color', () => { setting_date_color = settings.get_string("time-date-color"); });
+  settings.connect('changed::time-date-font', () => { setting_date_font = settings.get_string("time-date-font"); });
+  settings.connect('changed::time-clock-color', () => { setting_clock_color = settings.get_string("time-clock-color"); });
+  settings.connect('changed::time-clock-font', () => { setting_clock_font = settings.get_string("time-clock-font"); });
 
   //win.wrapevimage.connect("clicked", win.toggleWindowMode.bind(this));
   win.connect("move-focus", win.getposition);

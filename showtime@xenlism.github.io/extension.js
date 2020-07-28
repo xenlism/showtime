@@ -4,10 +4,12 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const GLib = imports.gi.GLib;
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const Convenience = Me.imports.convenience;
 const ExtensionPath = imports.misc.extensionUtils.getCurrentExtension().path;
 
-let text, button;
 let showtime_script = ExtensionPath + '/showtime.js';
+
 
 function killshowtime() {
   GLib.spawn_command_line_sync("/usr/bin/pkill -f " + showtime_script);
@@ -19,6 +21,11 @@ function startshowtime() {
 function init() {
     killshowtime();
     startshowtime();
+    let settings = Convenience.getSettings();
+    settings.connect('change-event', function (settings, keys) {
+      killshowtime();
+      startshowtime();
+    });
 }
 
 function enable() {

@@ -17,12 +17,12 @@
       <description>Setting Clock's format Enable for set Clock format to 12 Hour with AM/PM.</description>
     </key>
     <key type="s" name="time-date-font">
-      <default>"ubuntu 40"</default>
+      <default>"ubuntu 30"</default>
       <summary>Date Font Family and Size</summary>
       <description>Setting for Date Font Family and Size.</description>
     </key>
     <key type="s" name="time-clock-font">
-      <default>"ubuntu 40"</default>
+      <default>"ubuntu 30"</default>
       <summary>Clock Font Family and Size</summary>
       <description>Setting for clock Font Family and Size.</description>
     </key>
@@ -32,7 +32,7 @@
       <description>Setting for Date color default #FFFFFF.</description>
     </key>
     <key type="s" name="time-clock-color">
-      <default>"#FFFFFF"</default>
+      <default>"#fff245"</default>
       <summary>Color of Clock</summary>
       <description>Setting for Clock color default #FFFFFF.</description>
     </key>
