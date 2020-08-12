@@ -126,9 +126,25 @@ let win = new Gtk.Window();
 
   win.textsetTime = function(val) {
         let now = GLib.DateTime.new_now_local();
-        win.texttopright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + now.format("%H") + "</span>");
-        win.textmidright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + now.format("%M") + "</span>");
-        win.textbottomright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + now.format("%S") + "</span>");
+        let timehour = parseInt(now.format("%H"));
+
+        let texttopright_text, textmidright_text, textbottomright_text;
+        if (setting_time_am) {
+            texttopright_text = timehour;
+            textbottomright_text = "AM";
+            textmidright_text = now.format("%M");
+            if (timehour > 12) { texttopright_text = timehour - 12; }
+            else if (timehour < 1) { texttopright_text = timehour + 12; }
+            if (12 <= timehour < 24) { textbottomright_text = "PM"; }
+        } else {
+            texttopright_text = now.format("%H");
+            textmidright_text = now.format("%M");
+            textbottomright_text = now.format("%S");
+          }
+
+        win.texttopright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + texttopright_text + "</span>");
+        win.textmidright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + textmidright_text + "</span>");
+        win.textbottomright.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + textbottomright_text + "</span>");
         win.texttopleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + dayweek[parseInt(now.format("%w"))] + "</span>");
         win.textmidleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + now.format("%m") + "</span>");
         win.textbottomleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + now.format("%d") + "</span>");
