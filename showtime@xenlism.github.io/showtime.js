@@ -135,7 +135,7 @@ let win = new Gtk.Window();
             textmidright_text = now.format("%M");
             if (timehour > 12) { texttopright_text = timehour - 12; }
             else if (timehour < 1) { texttopright_text = timehour + 12; }
-            if (12 <= timehour < 24) { textbottomright_text = "PM"; }
+            if ((12 <= timehour) && (timehour < 24)) { textbottomright_text = "PM"; }
         } else {
             texttopright_text = now.format("%H");
             textmidright_text = now.format("%M");
