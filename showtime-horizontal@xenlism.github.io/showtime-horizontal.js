@@ -15,7 +15,8 @@ const Wnck = imports.gi.Wnck;
 
 let timeout;
 Gtk.init(null);
-let dayweek = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+let dayweek = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+let datemonthinyear = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 function getAppFileInfo() {
     let stack = (new Error()).stack,
         stackLine = stack.split('\n')[1],
@@ -79,38 +80,22 @@ let win = new Gtk.Window();
         let yposition = (screen.get_height()/2) - (win.get_size()[1]/2);
         win.move(setting_position_x,setting_position_y);
         win.wrapevbox = new Gtk.EventBox();
-        win.timegrid = new Gtk.Grid({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
-        win.texttopleft = new Gtk.Label({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
-        win.texttopright = new Gtk.Label({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
-        win.textmidleft = new Gtk.Label({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
-        win.textmidright = new Gtk.Label({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
-        win.textbottomleft = new Gtk.Label({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
-        win.textbottomright = new Gtk.Label({ halign: Gtk.Align.CENTER, valign: Gtk.Align.CENTER });
+        win.timegrid = new Gtk.Grid();
+        win.texttopleft = new Gtk.Label();
+        win.textbottomleft = new Gtk.Label();
 
         win.texttopleft.set_name("time-text-topleft");
-        win.texttopright.set_name("time-text-topright");
-        win.textmidleft.set_name("time-text-midleft");
-        win.textmidright.set_name("time-text-midright");
         win.textbottomleft.set_name("time-text-bottomleft");
-        win.textbottomright.set_name("time-text-bottomright");
 
         win.texttopleft.get_style_context().add_class("time-text-topleft");
-        win.texttopright.get_style_context().add_class("time-text-topright");
-        win.textmidleft.get_style_context().add_class("time-text-midleft");
-        win.textmidright.get_style_context().add_class("time-text-midright");
         win.textbottomleft.get_style_context().add_class("time-text-bottomleft");
-        win.textbottomright.get_style_context().add_class("time-text-bottomright");
 
         let css = new Gtk.CssProvider();
         css.load_from_path(path + '/stylesheet.css');
 
         win.timegrid.get_style_context().add_provider(css, 0);
         win.texttopleft.get_style_context().add_provider(css, 0);
-        win.texttopright.get_style_context().add_provider(css, 0);
-        win.textmidleft.get_style_context().add_provider(css, 0);
-        win.textmidright.get_style_context().add_provider(css, 0);
         win.textbottomleft.get_style_context().add_provider(css, 0);
-        win.textbottomright.get_style_context().add_provider(css, 0);
 
         win.set_tooltip_text("SUPER + Drag for Move Widget Position.");
         win.wrapevbox.add(win.timegrid);
@@ -136,9 +121,8 @@ let win = new Gtk.Window();
             if ((12 <= timehour) && (timehour < 24)) { ampm_text = "PM"; }
             texttopleft_text = hour_text + ":" + min_text + ":" + sec_text + " " + ampm_text;
         }
-
         win.texttopleft.set_markup("<span foreground='" + setting_clock_color + "' font_desc='" + setting_clock_font + "'>" + texttopleft_text + "</span>");
-        win.textbottomleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + now.format("%yyyy,%m,%d") + "</span>");
+        win.textbottomleft.set_markup("<span foreground='" + setting_date_color + "' font_desc='" + setting_date_font + "'>" + dayweek[parseInt(now.format("%w"))] + " " + datemonthinyear[(parseInt(now.format("%m")) - 1)] + " " + now.format("%d") + "</span>");
         return true;
   }
  win.getposition = function(val) {
