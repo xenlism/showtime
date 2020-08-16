@@ -1,8 +1,9 @@
 {
-    "name": "Showtime",
-    "uuid": "showtime@xenlism.github.io",
-    "shell-version": ["3.36","3.34"],
-    "description": "Date & Clock Desktop Widget",
-    "settings-schema": "org.gnome.shell.extensions.showtime",
-    "version": 2
+  "description": "Date and Clock Desktop Widget. Vertical Style Date and Clock Widget base on Budgie Desktop Widget",
+  "name": "Showtime - Desktop Widget",
+  "settings-schema": "org.gnome.shell.extensions.showtime",
+  "shell-version": ["3.34","3.36"],
+  "url": "https://github.com/xenlism/showtime",
+  "uuid": "showtime@xenlism.github.io",
+  "version": 3.0.1
 }
