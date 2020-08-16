@@ -19,13 +19,7 @@ function startshowtime() {
   Util.spawnCommandLine(" /usr/bin/gjs " + showtime_script);
 }
 function init() {
-    killshowtime();
-    startshowtime();
     let settings = Convenience.getSettings();
-    settings.connect('change-event', function (settings, keys) {
-      killshowtime();
-      startshowtime();
-    });
 }
 
 function enable() {

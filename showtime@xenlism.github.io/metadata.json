@@ -4,6 +4,5 @@
     "shell-version": ["3.36","3.34"],
     "description": "Date & Clock Desktop Widget",
     "settings-schema": "org.gnome.shell.extensions.showtime",
-    "version": 2,
-    "description": "Vertical Style Date & Clock Widget base on Budgie Desktop Widget"
+    "version": 2
 }

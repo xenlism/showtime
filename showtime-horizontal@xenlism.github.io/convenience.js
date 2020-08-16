@@ -43,7 +43,7 @@ function getSettings(schema) {
     schema = schema || extension.metadata['settings-schema'];
     const GioSSS = Gio.SettingsSchemaSource;
 
-    let schemaDir = extension.dir.get_child('schemas');
+    let schemaDir = extension.dir;
     let schemaSource;
     if (schemaDir.query_exists(null))
         schemaSource = GioSSS.new_from_directory(schemaDir.get_path(),GioSSS.get_default(),false);

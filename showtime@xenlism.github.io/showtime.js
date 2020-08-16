@@ -34,7 +34,7 @@ imports.searchPath.push(path);
 function getSettings() {
   let GioSSS = Gio.SettingsSchemaSource;
   let schemaSource = GioSSS.new_from_directory(
-    path + "/schemas",
+    path ,
     GioSSS.get_default(),
     false
   );
