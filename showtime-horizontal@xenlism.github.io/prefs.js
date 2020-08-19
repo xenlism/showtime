@@ -48,7 +48,7 @@ hextogdkrgba = function(hex) {
     b: parseInt(result[3], 16)/255
   } : null;
 }
-const showtimePrefs = GObject.registerClass(class showtimePrefs extends Gtk.Grid {
+const showtimeHorizontalPrefs = GObject.registerClass(class showtimeHorizontalPrefs extends Gtk.Grid {
 
     setup() {
           this.margin_top = 12;
@@ -135,7 +135,7 @@ const showtimePrefs = GObject.registerClass(class showtimePrefs extends Gtk.Grid
 function init() {
 }
 function buildPrefsWidget() {
-    let prefswidget = new showtimePrefs();
+    let prefswidget = new showtimeHorizontalPrefs();
     prefswidget.setup();
     prefswidget.show_all();
     return prefswidget;
