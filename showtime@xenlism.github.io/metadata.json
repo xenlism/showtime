@@ -1,5 +1,5 @@
 {
-  "description": "Date &amp;amp;amp;amp;amp;amp;amp; Clock Desktop Widget\n\nMove Widget by Press Super + Drag Widget",
+  "description": "Date and Clock Desktop Widget\nMove Widget by Press Super + Drag Widget",
   "name": "Showtime  - Desktop Widget",
   "settings-schema": "org.gnome.shell.extensions.showtime",
   "shell-version": [

@@ -12,7 +12,11 @@ let showtime_script = ExtensionPath + '/showtime.js';
 
 
 function killshowtime() {
-  GLib.spawn_command_line_sync("/usr/bin/pkill -f " + showtime_script);
+  let pkill = '/usr/bin/pkill';
+  if (Gio.File.new_for_path('/bin/pkill').query_exists(null)) {
+    pkill = '/bin/pkill';
+  }
+  GLib.spawn_command_line_sync(pkill + " -f " + showtime_script);
 }
 
 function startshowtime() {
