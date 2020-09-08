@@ -4,7 +4,6 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const GLib = imports.gi.GLib;
-const Gio   = imports.gi.Gio;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 const ExtensionPath = imports.misc.extensionUtils.getCurrentExtension().path;
@@ -13,11 +12,7 @@ let showtime_script = ExtensionPath + '/showtime-horizontal.js';
 
 
 function killshowtime() {
-  let pkill = '/usr/bin/pkill';
-  if (Gio.File.new_for_path('/bin/pkill').query_exists(null)) {
-    pkill = '/bin/pkill';
-  }
-  GLib.spawn_command_line_sync(pkill + " -f " + showtime_script);
+  GLib.spawn_command_line_sync("/usr/bin/pkill -f " + showtime_script);
 }
 
 function startshowtime() {

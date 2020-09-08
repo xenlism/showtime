@@ -30,47 +30,38 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 
-hex16bitsto8bits = function(val) {
-  let r = Math.floor(parseInt(val.substr(1,4),16)/256);
-  let g = Math.floor(parseInt(val.substr(5,4),16)/256);
-  let b = Math.floor(parseInt(val.substr(9,4),16)/256);
-  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-hextogdkrgba = function(hex) {
-  var x = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(x, function(m, r, g, b) {
-    return r + r + g + g + b + b;
-  });
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16)/255,
-    g: parseInt(result[2], 16)/255,
-    b: parseInt(result[3], 16)/255
-  } : null;
-}
-const showtimeHorizontalPrefs = GObject.registerClass(class showtimeHorizontalPrefs extends Gtk.Grid {
+
+const showtimeHorizontalPrefs = GObject.registerClass(class showtimeHorizontalPrefs extends Gtk.Box {
 
     setup() {
           this.margin_top = 12;
           this.margin_bottom = this.margin_top;
-          this.margin_start = 60;
-          this.margin_end = this.margin_start;
-          this.row_spacing = 6;
-          this.column_spacing = this.row_spacing;
+          this.margin_start = 30;
+          this.spacing = 10;
+          this.border_width = 10;
           this.orientation = Gtk.Orientation.VERTICAL;
 
           this._settings = Convenience.getSettings();
-          let ypos = 1;
+
 
           let time_am_Label = new Gtk.Label({label: "Time Format 12 Hour with AM/PM",halign: Gtk.Align.START});
           let time_am_Switch = new Gtk.Switch({active: this._settings.get_boolean("time-am"),halign: Gtk.Align.END});
           time_am_Switch.connect('notify::active', button => {
               this._settings.set_boolean("time-am", button.active);
           });
+          this.add(this.boxpack(time_am_Label,time_am_Switch));
 
-          this.attach(time_am_Label , 1, 1, 1, 1);
-          this.attach(time_am_Switch, 2, 1, 1, 1);
-
+          let time_date_format_Label = new Gtk.Label({label: "Date Display Format",halign: Gtk.Align.START});
+          let time_date_format_list = new Gtk.ComboBoxText();
+          time_date_format_list.append_text('Dayweek FullMonth Date');
+          time_date_format_list.append_text('Dayweek ShortMonth Date');
+          time_date_format_list.append_text('Date FullMonth Year');
+          time_date_format_list.append_text('Date ShortMonth Year');
+          time_date_format_list.set_active(this._settings.get_int('time-date-format'));
+          time_date_format_list.connect('changed', list => {
+              this._settings.set_int('time-date-format', list.get_active());
+          });
+          this.add(this.boxpack(time_date_format_Label,time_date_format_list));
 
           let time_date_font_Label = new Gtk.Label({label: "Date Font Family and Size",halign: Gtk.Align.START});
           let time_date_font_button = new Gtk.FontButton({halign: Gtk.Align.END});
@@ -80,13 +71,12 @@ const showtimeHorizontalPrefs = GObject.registerClass(class showtimeHorizontalPr
           time_date_font_button.connect("font_set", () => {
               this._settings.set_string("time-date-font", time_date_font_button.get_font());
           });
-          this.attach(time_date_font_Label , 1, 2, 1, 1);
-          this.attach(time_date_font_button, 2, 2, 1, 1);
+          this.add(this.boxpack(time_date_font_Label,time_date_font_button));
 
 
           let time_date_color_Label = new Gtk.Label({label: "Color of Date",halign: Gtk.Align.START});
           let time_date_color_button = new Gtk.ColorButton({halign: Gtk.Align.END});
-          let settings_date_color = hextogdkrgba(this._settings.get_string("time-date-color"));
+          let settings_date_color = this.hextogdkrgba(this._settings.get_string("time-date-color"));
           let _color = new Gdk.RGBA();
           _color.red = settings_date_color.r;
           _color.green = settings_date_color.g;
@@ -95,12 +85,22 @@ const showtimeHorizontalPrefs = GObject.registerClass(class showtimeHorizontalPr
           time_date_color_button.set_rgba(_color);
           time_date_color_button.connect("color_set", () => {
               let timedatecolor16bits = time_date_color_button.color.to_string();
-              this._settings.set_string("time-date-color", hex16bitsto8bits(timedatecolor16bits));
+              this._settings.set_string("time-date-color", this.hex16bitsto8bits(timedatecolor16bits));
           });
 
-          this.attach(time_date_color_Label , 1, 3, 1, 1);
-          this.attach(time_date_color_button, 2, 3, 1, 1);
+          this.add(this.boxpack(time_date_color_Label,time_date_color_button));
 
+          let time_clock_format_Label = new Gtk.Label({label: "Clock Display Format",halign: Gtk.Align.START});
+          let time_clock_format_list = new Gtk.ComboBoxText();
+          time_clock_format_list.append_text('Hour : Minute : Second (AM/PM)');
+          time_clock_format_list.append_text('Hour : Minute (AM/PM)');
+          time_clock_format_list.append_text('Hour : Minute : Second');
+          time_clock_format_list.append_text('Hour : Minute');
+          time_clock_format_list.set_active(this._settings.get_int('time-clock-format'));
+          time_clock_format_list.connect('changed', list => {
+              this._settings.set_int('time-clock-format', list.get_active());
+          });
+          this.add(this.boxpack(time_clock_format_Label,time_clock_format_list));
 
           let time_clock_font_Label = new Gtk.Label({label: "Clock Font Family and Size",halign: Gtk.Align.START});
           let time_clock_font_button = new Gtk.FontButton({halign: Gtk.Align.END});
@@ -110,12 +110,11 @@ const showtimeHorizontalPrefs = GObject.registerClass(class showtimeHorizontalPr
           time_clock_font_button.connect("font_set", () => {
               this._settings.set_string("time-clock-font", time_clock_font_button.get_font());
           });
-          this.attach(time_clock_font_Label , 1, 4, 1, 1);
-          this.attach(time_clock_font_button, 2, 4, 1, 1);
+          this.add(this.boxpack(time_clock_font_Label,time_clock_font_button));
 
           let time_clock_color_Label = new Gtk.Label({label: "Color of clock",halign: Gtk.Align.START});
           let time_clock_color_button = new Gtk.ColorButton({halign: Gtk.Align.END});
-          let settings_clock_color = hextogdkrgba(this._settings.get_string("time-clock-color"));
+          let settings_clock_color = this.hextogdkrgba(this._settings.get_string("time-clock-color"));
           _color.red = settings_clock_color.r;
           _color.green = settings_clock_color.g;
           _color.blue = settings_clock_color.b;
@@ -123,12 +122,52 @@ const showtimeHorizontalPrefs = GObject.registerClass(class showtimeHorizontalPr
           time_clock_color_button.set_rgba(_color);
           time_clock_color_button.connect("color_set", () => {
               let timeclockcolor16bits = time_clock_color_button.color.to_string();
-              this._settings.set_string("time-clock-color", hex16bitsto8bits(timeclockcolor16bits));
+              this._settings.set_string("time-clock-color", this.hex16bitsto8bits(timeclockcolor16bits));
           });
 
-          this.attach(time_clock_color_Label , 1, 5, 1, 1);
-          this.attach(time_clock_color_button, 2, 5, 1, 1);
+          this.add(this.boxpack(time_clock_color_Label,time_clock_color_button));
 
+          let time_shadow_Label = new Gtk.Label({label: "Shadow Transparency",halign: Gtk.Align.START});
+          let time_shadow_rang = Gtk.HScale.new_with_range(0, 100, 5);
+          time_shadow_rang.set_value(this._settings.get_int("time-shadow-transparent"));
+          time_shadow_rang.set_draw_value(false);
+          time_shadow_rang.add_mark(25, Gtk.PositionType.TOP, "25");
+          time_shadow_rang.add_mark(50, Gtk.PositionType.TOP, "50");
+          time_shadow_rang.add_mark(75, Gtk.PositionType.TOP, "75");
+          time_shadow_rang.set_size_request(200, -1);
+          time_shadow_rang.connect('value-changed', slider => {
+            this._settings.set_int("time-shadow-transparent", slider.get_value());
+          });
+          this.add(this.boxpack(time_shadow_Label,time_shadow_rang));
+
+
+    }
+
+    hex16bitsto8bits(val) {
+      let r = Math.floor(parseInt(val.substr(1,4),16)/256);
+      let g = Math.floor(parseInt(val.substr(5,4),16)/256);
+      let b = Math.floor(parseInt(val.substr(9,4),16)/256);
+      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    hextogdkrgba(hex) {
+      var x = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+      hex = hex.replace(x, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+      });
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16)/255,
+        g: parseInt(result[2], 16)/255,
+        b: parseInt(result[3], 16)/255
+      } : null;
+    }
+
+    boxpack(label,widget) {
+        let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, spacing: 10 });
+        hbox.pack_start(label, true, true, 0);
+        hbox.add(widget);
+        return hbox;
     }
 });
 
