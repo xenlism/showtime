@@ -109,7 +109,7 @@ let win = new Gtk.Window();
   win.textsetTime = function(val) {
         let now = GLib.DateTime.new_now_local();
         let timehour = parseInt(now.format("%H"));
-        let clock_text_print, hour_text, min_text, sec_text;
+        let clock_text_print, hour_text, min_text, sec_text, ampm_text;
         hour_text = timehour;
         min_text = now.format("%M");
         sec_text = now.format("%S");
