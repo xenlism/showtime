@@ -128,7 +128,7 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
         ctx.setSourceRGBA(0, 0, 0, 0);
         ctx.paint();
         ctx.restore();
-        ctx.setSourceRGBA(settings_cpu_color.r, settings_cpu_color.g, settings_cpu_color.b, 0.8);
+        ctx.setSourceRGBA(settings_cpu_color.r, settings_cpu_color.g, settings_cpu_color.b, settings_cpu_transparent);
 
       	let radius = 80.0;
       	let angle1 = -90.0  * (Math.PI/180.0); // angles are specified
@@ -239,6 +239,8 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
 });
 
 let settings_cpu_color = hextogdkrgba(settings.get_string("the-circles-cpu-color"));
+let settings_cpu_transparent = settings.get_int("the-circles-cpu-transparent") / 100;
+settings.connect('changed::the-circles-cpu-transparent', () => { settings_cpu_transparent = settings.get_int("the-circles-cpu-transparent") / 100; });
 settings.connect('changed::the-circles-cpu-color', () => { settings_cpu_color = hextogdkrgba(settings.get_string("the-circles-cpu-color")); });
 
 let App = new CircleCPU();

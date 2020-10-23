@@ -156,7 +156,7 @@ const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
         ctx.setSourceRGBA(0, 0, 0, 0);
         ctx.paint();
         ctx.restore();
-        ctx.setSourceRGBA(settings_ram_color.r, settings_ram_color.g, settings_ram_color.b, 0.8);
+        ctx.setSourceRGBA(settings_ram_color.r, settings_ram_color.g, settings_ram_color.b, settings_ram_transparent);
 
       	let radius = 80.0;
       	let angle1 = -90.0  * (Math.PI/180.0); // angles are specified
@@ -268,6 +268,8 @@ const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
     }
 });
 let settings_ram_color = hextogdkrgba(settings.get_string("the-circles-ram-color"));
+let settings_ram_transparent = settings.get_int("the-circles-ram-transparent") / 100;
+settings.connect('changed::the-circles-ram-transparent', () => { settings_ram_transparent = settings.get_int("the-circles-ram-transparent") / 100; });
 settings.connect('changed::the-circles-ram-color', () => { settings_ram_color = hextogdkrgba(settings.get_string("the-circles-ram-color")); });
 
 let App = new CircleRAM();
