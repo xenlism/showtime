@@ -1,0 +1,194 @@
+<schemalist>
+  <schema id="org.gnome.shell.extensions.the-circles-widget" path="/org/gnome/shell/extensions/the-circles-widget/">
+    <key type="b" name="the-circles-clock-show">
+      <default>true</default>
+      <summary>The Circle Clock Widget Eanble/Disable</summary>
+      <description>Setting for Show The Circle Clock Widget on screen.</description>
+    </key>
+    <key type="b" name="the-circles-modern-clock-show">
+      <default>true</default>
+      <summary>The Circle Modern Clock Widget Eanble/Disable</summary>
+      <description>Setting for Show The Circle Clock Widget on screen.</description>
+    </key>
+    <key type="b" name="the-circles-digit-clock-show">
+      <default>true</default>
+      <summary>The Circle Modern Clock Widget Eanble/Disable</summary>
+      <description>Setting for Show The Circle Clock Widget on screen.</description>
+    </key>
+    <key type="b" name="the-circles-clock-am">
+      <default>false</default>
+      <summary>The Circle Clock Widget as AM/PM</summary>
+      <description>Setting The Circle Clock Widget for AM/PM.</description>
+    </key>
+    <key type="b" name="the-circles-digit-am">
+      <default>false</default>
+      <summary>The Digit Clock Widget as AM/PM</summary>
+      <description>Setting The Circle Clock Widget for AM/PM.</description>
+    </key>
+    <key type="b" name="the-circles-clock-digit">
+      <default>true</default>
+      <summary>Show/Hide Digit Clock of The Circle Clock Widget</summary>
+      <description>Setting Visible of Digit Clock of The Circle Clock Widget.</description>
+    </key>
+    <key type="b" name="the-circles-cpu-show">
+      <default>true</default>
+      <summary>The Circle CPU Widget Eanble/Disable</summary>
+      <description>Setting for Show The Circle CPU Widget on screen.</description>
+    </key>
+    <key type="b" name="the-circles-ram-show">
+      <default>true</default>
+      <summary>The Circle RAM Widget Eanble/Disable</summary>
+      <description>Setting for Show The Circle RAM Widget on screen.</description>
+    </key>
+    <key type="i" name="the-circles-clock-position-x">
+      <default>835</default>
+      <summary>The Circle Clock Widget horizontal Postion</summary>
+      <description>Setting The Circle Clock Widget horizontal position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-clock-position-y">
+      <default>415</default>
+      <summary>The Circle Clock Widget Verical Postion</summary>
+      <description>Setting The Circle Clock Widget Vertical position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-digit-clock-position-x">
+      <default>835</default>
+      <summary>The Circle Clock Widget horizontal Postion</summary>
+      <description>Setting The Circle Clock Widget horizontal position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-digit-clock-position-y">
+      <default>415</default>
+      <summary>The Circle Clock Widget Verical Postion</summary>
+      <description>Setting The Circle Clock Widget Vertical position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-modern-clock-position-x">
+      <default>835</default>
+      <summary>The Circle Modern Clock Widget horizontal Postion</summary>
+      <description>Setting The Circle Clock Widget horizontal position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-modern-clock-position-y">
+      <default>415</default>
+      <summary>The Circle Modern Clock Widget Verical Postion</summary>
+      <description>Setting The Circle Clock Widget Vertical position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-cpu-position-x">
+      <default>835</default>
+      <summary>The Circle CPU Widget horizontal Postion</summary>
+      <description>The Circle CPU Widget position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-cpu-position-y">
+      <default>415</default>
+      <summary>The Circle CPU Widget Verical Postion</summary>
+      <description>The Circle CPU Widget  Vertical position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-ram-position-x">
+      <default>835</default>
+      <summary>The Circle RAM Widget horizontal Postion</summary>
+      <description>Setting The Circle RAM Widget horizontal position on screen.</description>
+    </key>
+    <key type="i" name="the-circles-ram-position-y">
+      <default>415</default>
+      <summary>The Circle RAM Widget Verical Postion</summary>
+      <description>Setting The Circle RAM Widget Vertical position on screen.</description>
+    </key>
+    <key type="s" name="the-circles-clock-color">
+      <default>"#FFFFFF"</default>
+      <summary>Color of Subject of infomations</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-clock-hour-ring-color">
+      <default>"#00FFB3"</default>
+      <summary>Color of Subject of infomations</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-clock-min-ring-color">
+      <default>"#a1fe00"</default>
+      <summary>Color of Subject of infomations</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-clock-sec-ring-color">
+      <default>"#fb1251"</default>
+      <summary>Color of Subject of infomations</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-clock-hour-digit-color">
+      <default>"#00FFB3"</default>
+      <summary>Color of Hour Digit Clock</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-clock-min-digit-color">
+      <default>"#a1fe00"</default>
+      <summary>Color of Minute Digit Clock</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-clock-sec-digit-color">
+      <default>"#fb1251"</default>
+      <summary>Color of Second Digit Clock</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-clock-ampm-digit-color">
+      <default>"#ffffff"</default>
+      <summary>Color of AMPM Text of Digit Clock</summary>
+      <description>Setting for Clock Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-cpu-color">
+      <default>"#FFFFFF"</default>
+      <summary>Color of CPU Widget</summary>
+      <description>Setting for CPU Widget color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="the-circles-ram-color">
+      <default>"#FFFFFF"</default>
+      <summary>Color of RAM Widget</summary>
+      <description>Setting for RAM Widget color default #FFFFFF.</description>
+    </key>
+    <key type="i" name="the-circles-cpu-transparent">
+      <default>80</default>
+      <summary>The Circle CPU Widget transparency</summary>
+      <description>Setting The Circle CPU Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-clock-transparent">
+      <default>80</default>
+      <summary>The Circle Clock Widget transparency</summary>
+      <description>Setting The Circle Clock Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-digit-transparent">
+      <default>80</default>
+      <summary>The Digit Clock Widget transparency</summary>
+      <description>Setting The Circle Clock Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-ram-transparent">
+      <default>80</default>
+      <summary>The Circle RAM Widget transparency</summary>
+      <description>Setting The Circle RAM Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-cpu-ring-transparent">
+      <default>30</default>
+      <summary>Background Ring of The Circle CPU Widget transparency</summary>
+      <description>Setting Background Ring of The Circle CPU Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-clock-ring-transparent">
+      <default>30</default>
+      <summary>Background Ring of The Circle Clock Widget transparency</summary>
+      <description>Setting Background Ring of The Circle Clock Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-ram-ring-transparent">
+      <default>30</default>
+      <summary>Background Ring of The Circle RAM Widget transparency</summary>
+      <description>Setting Background Ring of The Circle RAM Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-cpu-frame-transparent">
+      <default>80</default>
+      <summary>Frame of The Circle CPU Widget transparency</summary>
+      <description>Setting Frame of The Circle CPU Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-clock-frame-transparent">
+      <default>80</default>
+      <summary>Frame of The Circle Clock Widget transparency</summary>
+      <description>Setting Frame of The Circle Clock Widget transparency.</description>
+    </key>
+    <key type="i" name="the-circles-ram-frame-transparent">
+      <default>80</default>
+      <summary>Frame of The Circle RAM Widget transparency</summary>
+      <description>Setting Frame of The Circle RAM Widget transparency.</description>
+    </key>
+  </schema>
+</schemalist>
