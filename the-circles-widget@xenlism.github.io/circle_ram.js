@@ -203,7 +203,7 @@ const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
         y = (height / 2) + 20;
         ctx.moveTo( x, y);
         ctx.showText( Mem.usepercent + "%");
-
+        ctx.$dispose();
         return true;
     }
 

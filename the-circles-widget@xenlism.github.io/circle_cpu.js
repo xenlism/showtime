@@ -173,7 +173,7 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
         y = (height / 2) + 20;
         ctx.moveTo( x, y);
         ctx.showText( cpu_usage + "%");
-
+        ctx.$dispose();
         return true;
     }
 

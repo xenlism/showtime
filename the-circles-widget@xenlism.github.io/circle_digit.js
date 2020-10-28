@@ -170,8 +170,7 @@ const CircleClock = GObject.registerClass(class CircleClockWin extends Gtk.Windo
         y = 30
         ctx.moveTo( x, y);
         ctx.showText(ampm);
-
-
+        ctx.$dispose();
         return true;
     }
 

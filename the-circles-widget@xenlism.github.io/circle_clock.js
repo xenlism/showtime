@@ -214,6 +214,7 @@ const CircleClock = GObject.registerClass(class CircleClockWin extends Gtk.Windo
           ctx.moveTo( x, y);
           ctx.showText(clock);
         }
+        ctx.$dispose();
         return true;
     }
 
