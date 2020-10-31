@@ -11,6 +11,7 @@ const Util = imports.misc.util;
 const GLib = imports.gi.GLib;
 const Clutter = imports.gi.Clutter;
 const Mainloop = imports.mainloop;
+const Tweener = imports.tweener;
 const UPower = imports.gi.UPowerGlib;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
@@ -95,29 +96,6 @@ function OnOffWidget(key,path) {
   }
 }
 
-function init() {
-  settings.connect('changed::the-circles-clock-show', () => {
-    setting_clock_show = settings.get_boolean("the-circles-clock-show");
-    OnOffWidget(setting_clock_show,widget_clock_script);
-  });
-  settings.connect('changed::the-circles-cpu-show', () => {
-    setting_cpu_show = settings.get_boolean("the-circles-cpu-show");
-    OnOffWidget(setting_cpu_show,widget_cpu_script);
-  });
-  settings.connect('changed::the-circles-ram-show', () => {
-    setting_ram_show = settings.get_boolean("the-circles-ram-show");
-    OnOffWidget(setting_ram_show,widget_ram_script);
-  });
-  settings.connect('changed::the-circles-modern-clock-show', () => {
-    setting_modern_clock_show = settings.get_boolean("the-circles-modern-clock-show");
-    OnOffWidget(setting_modern_clock_show,widget_modern_script);
-  });
-  settings.connect('changed::the-circles-digit-clock-show', () => {
-    setting_digit_clock_show = settings.get_boolean("the-circles-digit-clock-show");
-    OnOffWidget(setting_digit_clock_show,widget_digit_script);
-  });
-}
-
 function killall() {
   OnOffWidget(false,widget_clock_script);
   OnOffWidget(false,widget_cpu_script);
@@ -136,6 +114,26 @@ function enable() {
     OnOffWidget(setting_ram_show,widget_ram_script);
     OnOffWidget(setting_modern_clock_show,widget_modern_script);
     OnOffWidget(setting_digit_clock_show,widget_digit_script);
+    settings.connect('changed::the-circles-clock-show', () => {
+      setting_clock_show = settings.get_boolean("the-circles-clock-show");
+      OnOffWidget(setting_clock_show,widget_clock_script);
+    });
+    settings.connect('changed::the-circles-cpu-show', () => {
+      setting_cpu_show = settings.get_boolean("the-circles-cpu-show");
+      OnOffWidget(setting_cpu_show,widget_cpu_script);
+    });
+    settings.connect('changed::the-circles-ram-show', () => {
+      setting_ram_show = settings.get_boolean("the-circles-ram-show");
+      OnOffWidget(setting_ram_show,widget_ram_script);
+    });
+    settings.connect('changed::the-circles-modern-clock-show', () => {
+      setting_modern_clock_show = settings.get_boolean("the-circles-modern-clock-show");
+      OnOffWidget(setting_modern_clock_show,widget_modern_script);
+    });
+    settings.connect('changed::the-circles-digit-clock-show', () => {
+      setting_digit_clock_show = settings.get_boolean("the-circles-digit-clock-show");
+      OnOffWidget(setting_digit_clock_show,widget_digit_script);
+    });
   }
 }
 

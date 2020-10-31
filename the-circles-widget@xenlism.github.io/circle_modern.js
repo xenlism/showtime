@@ -319,11 +319,9 @@ settings.connect('changed::the-circles-clock-frame-transparent', () => { setting
 let App = new CircleClock();
 App.show_all();
 App.connect("destroy", App.quit);
-App.loop = GLib.MainLoop.new(null, false);
 App.refresh = function() {
   App.update();
   return GLib.SOURCE_CONTINUE;
 }
 App.timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, App.refresh);
-App.loop.run();
 Gtk.main();
