@@ -34,7 +34,7 @@ let setting_cpu_show = settings.get_boolean("the-circles-cpu-show");
 let setting_ram_show = settings.get_boolean("the-circles-ram-show");
 let setting_modern_clock_show = settings.get_boolean("the-circles-modern-clock-show");
 let setting_digit_clock_show = settings.get_boolean("the-circles-digit-clock-show");
-let widget_clock_enable, widget_cpu_enable, widget_ram_enable , widget_modern_enable, widget_digit_enable;
+let widget_clock_enable = widget_cpu_enable = widget_ram_enable = widget_modern_enable = widget_digit_enable = -1;
 // const System = imports.system;
 var ModalDialog = imports.ui.modalDialog;
 
@@ -140,9 +140,9 @@ function enable() {
 
 function disable() {
   killall();
-  settings.disconnect(widget_clock_enable);
-  settings.disconnect(widget_cpu_enable);
-  settings.disconnect(widget_ram_enable);
-  settings.disconnect(widget_modern_enable);
-  settings.disconnect(widget_digit_enable);
+  if ( widget_clock_enable > -1) {settings.disconnect(widget_clock_enable);}
+  if ( widget_cpu_enable > -1) {settings.disconnect(widget_cpu_enable);}
+  if ( widget_ram_enable > -1) {settings.disconnect(widget_ram_enable);}
+  if ( widget_modern_enable > -1) {settings.disconnect(widget_modern_enable);}
+  if ( widget_digit_enable > -1) {settings.disconnect(widget_digit_enable);}
 }

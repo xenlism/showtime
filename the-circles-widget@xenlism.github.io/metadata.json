@@ -1,5 +1,6 @@
 {
   "description": "Show System Infomations on Desktop as Circles Desktop Widget",
+  "extension-id": "the-circles-widget",
   "name": "The Circles - Desktop Widget",
   "settings-schema": "org.gnome.shell.extensions.the-circles-widget",
   "shell-version": [
@@ -7,8 +8,7 @@
     "3.36",
     "3.38"
   ],
-  "extension-id": "the-circles-widget",
   "url": "https://github.com/xenlism/showtime",
   "uuid": "the-circles-widget@xenlism.github.io",
-  "version": 1
+  "version": 7
 }
