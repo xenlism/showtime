@@ -1,0 +1,12 @@
+{
+  "description": "Horizontal Style Date & Clock Widget base on Budgie Desktop Widget",
+  "extension-id": "showtime-horizontal",
+  "name": "Showtime Horizontal - Desktop Widget",
+  "settings-schema": "org.gnome.shell.extensions.showtime-horizontal",
+  "shell-version": [
+    "40"
+  ],
+  "url": "https://github.com/xenlism/showtime",
+  "uuid": "showtime-horizontal@xenlism.github.io",
+  "version": 40.20210408
+}

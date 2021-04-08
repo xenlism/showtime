@@ -1,0 +1,11 @@
+{
+  "description": "Date &amp;amp;amp;amp;amp;amp;amp; Clock Desktop Widget\n\nMove Widget by Press Super + Drag Widget\nhttps://github.com/xenlism/showtime",
+  "name": "Showtime  - Desktop Widget",
+  "settings-schema": "org.gnome.shell.extensions.showtime",
+  "shell-version": [
+    "40"
+  ],
+  "url": "https://github.com/xenlism/showtime",
+  "uuid": "showtime@xenlism.github.io",
+  "version":40.20210408
+}

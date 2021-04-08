@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.showtime" path="/org/gnome/shell/extensions/showtime/">
+    <key type="i" name="time-position-x">
+      <default>835</default>
+      <summary>Showtime Widget horizontal Postion</summary>
+      <description>Setting Showtime Widget horizontal position on screen.</description>
+    </key>
+    <key type="i" name="time-position-y">
+      <default>415</default>
+      <summary>Showtime Widget Verical Postion</summary>
+      <description>Setting Showtime Widget Vertical position on screen.</description>
+    </key>
+    <key type="b" name="time-am">
+      <default>false</default>
+      <summary>Time Format 12 Hour with AM/PM</summary>
+      <description>Setting Clock's format Enable for set Clock format to 12 Hour with AM/PM.</description>
+    </key>
+    <key type="s" name="time-date-font">
+      <default>"ubuntu 30"</default>
+      <summary>Date Font Family and Size</summary>
+      <description>Setting for Date Font Family and Size.</description>
+    </key>
+    <key type="s" name="time-clock-font">
+      <default>"ubuntu 30"</default>
+      <summary>Clock Font Family and Size</summary>
+      <description>Setting for clock Font Family and Size.</description>
+    </key>
+    <key type="s" name="time-date-color">
+      <default>"#FFFFFF"</default>
+      <summary>Color of Date</summary>
+      <description>Setting for Date color default #FFFFFF.</description>
+    </key>
+    <key type="s" name="time-clock-color">
+      <default>"#fff245"</default>
+      <summary>Color of Clock</summary>
+      <description>Setting for Clock color default #FFFFFF.</description>
+    </key>
+  </schema>
+</schemalist>
