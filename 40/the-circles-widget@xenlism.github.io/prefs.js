@@ -22,7 +22,6 @@ const Mainloop = imports.mainloop;
 const Cairo = imports.cairo;
 const Lang  = imports.lang;
 const GLib  = imports.gi.GLib;
-const Wnck = imports.gi.Wnck;
 const Config = imports.misc.config;
 
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -178,9 +177,9 @@ const CirclePrefsWindow = GObject.registerClass(class CirclePrefs extends Gtk.Bo
         let the_circles_clock_frame_optic_rang = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,0, 100, 5);
         the_circles_clock_frame_optic_rang.set_value(this._settings.get_int("the-circles-clock-frame-transparent"));
         the_circles_clock_frame_optic_rang.set_draw_value(false);
-        the_circles_clock_frame_optic_rang.append_mark(25, Gtk.PositionType.TOP, "25");
-        the_circles_clock_frame_optic_rang.append_mark(50, Gtk.PositionType.TOP, "50");
-        the_circles_clock_frame_optic_rang.append_mark(75, Gtk.PositionType.TOP, "75");
+        the_circles_clock_frame_optic_rang.add_mark(25, Gtk.PositionType.TOP, "25");
+        the_circles_clock_frame_optic_rang.add_mark(50, Gtk.PositionType.TOP, "50");
+        the_circles_clock_frame_optic_rang.add_mark(75, Gtk.PositionType.TOP, "75");
         the_circles_clock_frame_optic_rang.set_size_request(200, -1);
         the_circles_clock_frame_optic_rang.connect('value-changed', slider => {
           this._settings.set_int("the-circles-clock-frame-transparent", slider.get_value());
@@ -191,9 +190,9 @@ const CirclePrefsWindow = GObject.registerClass(class CirclePrefs extends Gtk.Bo
         let the_circles_clock_optic_rang = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,0, 100, 5);
         the_circles_clock_optic_rang.set_value(this._settings.get_int("the-circles-clock-transparent"));
         the_circles_clock_optic_rang.set_draw_value(false);
-        the_circles_clock_optic_rang.append_mark(25, Gtk.PositionType.TOP, "25");
-        the_circles_clock_optic_rang.append_mark(50, Gtk.PositionType.TOP, "50");
-        the_circles_clock_optic_rang.append_mark(75, Gtk.PositionType.TOP, "75");
+        the_circles_clock_optic_rang.add_mark(25, Gtk.PositionType.TOP, "25");
+        the_circles_clock_optic_rang.add_mark(50, Gtk.PositionType.TOP, "50");
+        the_circles_clock_optic_rang.add_mark(75, Gtk.PositionType.TOP, "75");
         the_circles_clock_optic_rang.set_size_request(200, -1);
         the_circles_clock_optic_rang.connect('value-changed', slider => {
           this._settings.set_int("the-circles-clock-transparent", slider.get_value());
@@ -204,9 +203,9 @@ const CirclePrefsWindow = GObject.registerClass(class CirclePrefs extends Gtk.Bo
         let the_circles_clock_bg_ring_optic_rang = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,0, 100, 5);
         the_circles_clock_bg_ring_optic_rang.set_value(this._settings.get_int("the-circles-clock-ring-transparent"));
         the_circles_clock_bg_ring_optic_rang.set_draw_value(false);
-        the_circles_clock_bg_ring_optic_rang.append_mark(25, Gtk.PositionType.TOP, "25");
-        the_circles_clock_bg_ring_optic_rang.append_mark(50, Gtk.PositionType.TOP, "50");
-        the_circles_clock_bg_ring_optic_rang.append_mark(75, Gtk.PositionType.TOP, "75");
+        the_circles_clock_bg_ring_optic_rang.add_mark(25, Gtk.PositionType.TOP, "25");
+        the_circles_clock_bg_ring_optic_rang.add_mark(50, Gtk.PositionType.TOP, "50");
+        the_circles_clock_bg_ring_optic_rang.add_mark(75, Gtk.PositionType.TOP, "75");
         the_circles_clock_bg_ring_optic_rang.set_size_request(200, -1);
         the_circles_clock_bg_ring_optic_rang.connect('value-changed', slider => {
           this._settings.set_int("the-circles-clock-ring-transparent", slider.get_value());
@@ -244,9 +243,9 @@ const CirclePrefsWindow = GObject.registerClass(class CirclePrefs extends Gtk.Bo
         let the_circles_cpu_optic_rang = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,0, 100, 5);
         the_circles_cpu_optic_rang.set_value(this._settings.get_int("the-circles-cpu-transparent"));
         the_circles_cpu_optic_rang.set_draw_value(false);
-        the_circles_cpu_optic_rang.append_mark(25, Gtk.PositionType.TOP, "25");
-        the_circles_cpu_optic_rang.append_mark(50, Gtk.PositionType.TOP, "50");
-        the_circles_cpu_optic_rang.append_mark(75, Gtk.PositionType.TOP, "75");
+        the_circles_cpu_optic_rang.add_mark(25, Gtk.PositionType.TOP, "25");
+        the_circles_cpu_optic_rang.add_mark(50, Gtk.PositionType.TOP, "50");
+        the_circles_cpu_optic_rang.add_mark(75, Gtk.PositionType.TOP, "75");
         the_circles_cpu_optic_rang.set_size_request(200, -1);
         the_circles_cpu_optic_rang.connect('value-changed', slider => {
           this._settings.set_int("the-circles-cpu-transparent", slider.get_value());
@@ -283,9 +282,9 @@ const CirclePrefsWindow = GObject.registerClass(class CirclePrefs extends Gtk.Bo
         let the_circles_ram_optic_rang = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,0, 100, 5);
         the_circles_ram_optic_rang.set_value(this._settings.get_int("the-circles-ram-transparent"));
         the_circles_ram_optic_rang.set_draw_value(false);
-        the_circles_ram_optic_rang.append_mark(25, Gtk.PositionType.TOP, "25");
-        the_circles_ram_optic_rang.append_mark(50, Gtk.PositionType.TOP, "50");
-        the_circles_ram_optic_rang.append_mark(75, Gtk.PositionType.TOP, "75");
+        the_circles_ram_optic_rang.add_mark(25, Gtk.PositionType.TOP, "25");
+        the_circles_ram_optic_rang.add_mark(50, Gtk.PositionType.TOP, "50");
+        the_circles_ram_optic_rang.add_mark(75, Gtk.PositionType.TOP, "75");
         the_circles_ram_optic_rang.set_size_request(200, -1);
         the_circles_ram_optic_rang.connect('value-changed', slider => {
           this._settings.set_int("the-circles-ram-transparent", slider.get_value());
@@ -379,9 +378,9 @@ const CirclePrefsWindow = GObject.registerClass(class CirclePrefs extends Gtk.Bo
         let the_circles_digit_optic_rang = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,0, 100, 5);
         the_circles_digit_optic_rang.set_value(this._settings.get_int("the-circles-digit-transparent"));
         the_circles_digit_optic_rang.set_draw_value(false);
-        the_circles_digit_optic_rang.append_mark(25, Gtk.PositionType.TOP, "25");
-        the_circles_digit_optic_rang.append_mark(50, Gtk.PositionType.TOP, "50");
-        the_circles_digit_optic_rang.append_mark(75, Gtk.PositionType.TOP, "75");
+        the_circles_digit_optic_rang.add_mark(25, Gtk.PositionType.TOP, "25");
+        the_circles_digit_optic_rang.add_mark(50, Gtk.PositionType.TOP, "50");
+        the_circles_digit_optic_rang.add_mark(75, Gtk.PositionType.TOP, "75");
         the_circles_digit_optic_rang.set_size_request(200, -1);
         the_circles_digit_optic_rang.connect('value-changed', slider => {
           this._settings.set_int("the-circles-digit-transparent", slider.get_value());
