@@ -34,6 +34,8 @@ let setting_cpu_show = settings.get_boolean("the-circles-cpu-show");
 let setting_ram_show = settings.get_boolean("the-circles-ram-show");
 let setting_modern_clock_show = settings.get_boolean("the-circles-modern-clock-show");
 let setting_digit_clock_show = settings.get_boolean("the-circles-digit-clock-show");
+let setting_widget_signal;
+
 
 // const System = imports.system;
 var ModalDialog = imports.ui.modalDialog;
@@ -66,6 +68,15 @@ libgtop, Network Manager and gir bindings \n\
 \t    on Fedora: libgtop2-devel, NetworkManager-glib-devel \n\
 \t    on Arch: libgtop, networkmanager\n\
 \t    on openSUSE: typelib-1_0-GTop-2_0, typelib-1_0-NetworkManager-1_0\n';
+
+
+function widgetSettings() {
+    setting_clock_show = settings.get_boolean("the-circles-clock-show");
+    setting_cpu_show = settings.get_boolean("the-circles-cpu-show");
+    setting_ram_show = settings.get_boolean("the-circles-ram-show");
+    setting_modern_clock_show = settings.get_boolean("the-circles-modern-clock-show");
+    setting_digit_clock_show = settings.get_boolean("the-circles-digit-clock-show");
+}
 
 let text;
 function hidesiDialog() {
@@ -103,40 +114,29 @@ function killall() {
   OnOffWidget(false,widget_modern_script);
   OnOffWidget(false,widget_digit_script);
 }
+function runall() {
+  OnOffWidget(setting_clock_show,widget_clock_script);
+  OnOffWidget(setting_cpu_show,widget_cpu_script);
+  OnOffWidget(setting_ram_show,widget_ram_script);
+  OnOffWidget(setting_modern_clock_show,widget_modern_script);
+  OnOffWidget(setting_digit_clock_show,widget_digit_script);
+}
 
 function enable() {
   if (!(siDepsGtop && siDepsNM)) {
       showSiDialog();
   } else {
     killall();
-    OnOffWidget(setting_clock_show,widget_clock_script);
-    OnOffWidget(setting_cpu_show,widget_cpu_script);
-    OnOffWidget(setting_ram_show,widget_ram_script);
-    OnOffWidget(setting_modern_clock_show,widget_modern_script);
-    OnOffWidget(setting_digit_clock_show,widget_digit_script);
-    settings.connect('changed::the-circles-clock-show', () => {
-      setting_clock_show = settings.get_boolean("the-circles-clock-show");
-      OnOffWidget(setting_clock_show,widget_clock_script);
+    runall();
+    setting_widget_signal = settings.connect("changed", () => {
+          widgetSettings();
+          runall();
     });
-    settings.connect('changed::the-circles-cpu-show', () => {
-      setting_cpu_show = settings.get_boolean("the-circles-cpu-show");
-      OnOffWidget(setting_cpu_show,widget_cpu_script);
-    });
-    settings.connect('changed::the-circles-ram-show', () => {
-      setting_ram_show = settings.get_boolean("the-circles-ram-show");
-      OnOffWidget(setting_ram_show,widget_ram_script);
-    });
-    settings.connect('changed::the-circles-modern-clock-show', () => {
-      setting_modern_clock_show = settings.get_boolean("the-circles-modern-clock-show");
-      OnOffWidget(setting_modern_clock_show,widget_modern_script);
-    });
-    settings.connect('changed::the-circles-digit-clock-show', () => {
-      setting_digit_clock_show = settings.get_boolean("the-circles-digit-clock-show");
-      OnOffWidget(setting_digit_clock_show,widget_digit_script);
-    });
+
   }
 }
 
 function disable() {
   killall();
+  settings.disconnect(setting_widget_signal);
 }
