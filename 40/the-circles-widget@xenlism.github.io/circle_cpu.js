@@ -106,7 +106,9 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
       this.xbox.spacing = 0;
       this.xbox.border_width = 0;
       this.xbox.orientation = Gtk.Orientation.VERTICAL;
-
+      this.cpustat = 0.0;
+      this.cpuTotOld = 0.0;
+      this.idleOld = 0.0;
       this.area = this.buildArea();
       this.xbox.add(this.area);
       //this.wrapevbox.add(this.box);
@@ -145,9 +147,10 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
         ctx.arc(xe, ye, radius, angle1, angle2);
         ctx.stroke();
 
-        let cpu_usage = this.get_cpu_usage();
+
+        this.get_cpu_usage();
         angle1 = -90.0  * (Math.PI/180.0); // angles are specified
-      	angle2 = ((cpu_usage * 3.6) - 90 ) * (Math.PI/180.0); // in radians
+      	angle2 = ((this.cpustat * 3.6) - 90 ) * (Math.PI/180.0); // in radians
 
         ctx.setSourceRGBA(settings_cpu_color.r, settings_cpu_color.g, settings_cpu_color.b, 0.6);
         radius = 60.0;
@@ -172,7 +175,7 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
         x = (width / 2) - 25;
         y = (height / 2) + 20;
         ctx.moveTo( x, y);
-        ctx.showText( cpu_usage + "%");
+        ctx.showText( this.cpustat + "%");
         ctx.$dispose();
         return true;
     }
@@ -205,13 +208,31 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
           this.draw(ctx, height, width);
     }
     get_cpu_usage() {
-      this._cpu_usage_script = '/bin/bash ' + path + '/cpuusage.sh';
-      return this.runcmd(this._cpu_usage_script);
-    }
-    runcmd(_cmd) {
-      [this._result, this._stdout, this._stderr] = GLib.spawn_command_line_sync(_cmd);
-      return ByteArray.toString(this._stdout).replace(/\n/g, '');
-    }
+           let cpu_text;
+           let file = Gio.file_new_for_path('/proc/stat');
+           file.load_contents_async(null, (source, result) => {
+               let contents = source.load_contents_finish(result)[1];
+               let lines = ByteArray.toString(contents).split('\n');
+
+               let entry = lines[0].trim().split(/\s+/);
+               let cpuTot = 0;
+               let idle = parseInt(entry[4]);
+
+               // user sys nice idle iowait
+               for (let i = 1; i < 5; i++)
+                   cpuTot += parseInt(entry[i]);
+
+               let delta = cpuTot - this.cpuTotOld;
+               let deltaIdle = idle - this.idleOld;
+
+               let cpuCurr = 100 * (delta - deltaIdle) / delta;
+
+               this.cpuTotOld = cpuTot;
+               this.idleOld = idle;
+               this.cpustat = cpuCurr.toFixed(1);
+           });
+       }
+
     update() {
       this.area.queue_draw();
     }

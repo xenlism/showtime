@@ -74,33 +74,6 @@ let hex16bitsto8bits = function(val) {
   return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
-const RAM_INFO = class SysInfo_RAM {
-    constructor() {
-      this._gtop = new GTop.glibtop_mem();
-      GTop.glibtop_get_mem(this._gtop);
-      this._ram = [0,0,0];
-      this._unitConversion = 1024 * 1024;
-      this._decimals = 100;
-      this.refresh();
-      this.usage = Math.round((this._ram[0]/1000)*100)/100;
-      this.free = Math.round((this._ram[1]/1000)*100)/100;
-      this.total = Math.round((this._ram[2]/1000)*100)/100;
-      this.usepercent = Math.round((this._ram[0]/this._ram[2])*100);
-      this.freepercent = Math.round((this._ram[1]/this._ram[2])*100);
-
-    }
-    refresh() {
-      GTop.glibtop_get_mem(this._gtop);
-      this._ram[0] = Math.round(this._gtop.user / this._unitConversion);
-      this._ram[1] = Math.round(this._gtop.free / this._unitConversion) ;
-      this._ram[2] = Math.round(this._gtop.total / this._unitConversion) ;
-      this.usage = Math.round((this._ram[0]/1000)*100)/100;
-      this.free = Math.round((this._ram[1]/1000)*100)/100;
-      this.total = Math.round((this._ram[2]/1000)*100)/100;
-      this.usepercent = Math.round((this._ram[0]/this._ram[2])*100);
-      this.freepercent = Math.round((this._ram[1]/this._ram[2])*100);
-    }
-}
 
 const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
     _init() {
@@ -146,7 +119,9 @@ const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
       this.wrapevbox.connect("button-press-event", this.onClick.bind(this));
       this.wrapevbox.connect("enter-notify-event", this.toggleWindowNORMALMode.bind(this));
       this.wrapevbox.connect("leave-notify-event", this.toggleWindowDESKTOPMode.bind(this));
+
     }
+
     draw(ctx, height, width) {
 
       let xe, ye;
@@ -173,11 +148,10 @@ const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
         ctx.arc(xe, ye, radius, angle1, angle2);
         ctx.stroke();
 
-        let Mem = new RAM_INFO();
-        Mem.refresh();
 
+        this.get_ram_usage();
         angle1 = -90.0  * (Math.PI/180.0); // angles are specified
-      	angle2 = ((Mem.usepercent * 3.6) - 90 ) * (Math.PI/180.0); // in radians
+      	angle2 = ((this.usepercent * 3.6) - 90 ) * (Math.PI/180.0); // in radians
 
         ctx.setSourceRGBA(settings_ram_color.r, settings_ram_color.g, settings_ram_color.b, 0.6);
         radius = 60.0;
@@ -202,7 +176,7 @@ const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
         x = (width / 2) - 25;
         y = (height / 2) + 20;
         ctx.moveTo( x, y);
-        ctx.showText( Mem.usepercent + "%");
+        ctx.showText( this.usepercent + "%");
         ctx.$dispose();
         return true;
     }
@@ -235,13 +209,46 @@ const CircleRAM = GObject.registerClass(class CircleRAMWin extends Gtk.Window {
           this.draw(ctx, height, width);
     }
     get_ram_usage() {
-      this._ram_usage_script = '/bin/bash ' + path + '/ramusage.sh';
-      return this.runcmd(this._ram_usage_script);
+          this._gtop = new GTop.glibtop_mem();
+          GTop.glibtop_get_mem(this._gtop);
+          this._ram = [0,0,0];
+          this._unitConversion = 1024 * 1024;
+          this._decimals = 100;
+          GTop.glibtop_get_mem(this._gtop);
+          this._ram[0] = Math.round(this._gtop.user / this._unitConversion);
+          this._ram[1] = Math.round(this._gtop.free / this._unitConversion) ;
+          this._ram[2] = Math.round(this._gtop.total / this._unitConversion) ;
+          this.usage = Math.round((this._ram[0]/1000)*100)/100;
+          this.free = Math.round((this._ram[1]/1000)*100)/100;
+          this.total = Math.round((this._ram[2]/1000)*100)/100;
+          this.usepercent = Math.round((this._ram[0]/this._ram[2])*100);
+          this.freepercent = Math.round((this._ram[1]/this._ram[2])*100);
     }
-    runcmd(_cmd) {
-      [this._result, this._stdout, this._stderr] = GLib.spawn_command_line_sync(_cmd);
-      return ByteArray.toString(this._stdout).replace(/\n/g, '');
-    }
+    _get_ram_usage() {
+           let file = Gio.file_new_for_path('/proc/meminfo');
+           file.load_contents_async(null, (source, result) => {
+               let contents = source.load_contents_finish(result)[1];
+               let lines = ByteArray.toString(contents).split('\n');
+
+               let total, available, used;
+
+               for (let i = 0; i < 3; i++) {
+                   let values;
+                   let line = lines[i];
+
+                   if (line.match(/^MemTotal/)) {
+                       values = line.match(/^MemTotal:\s*([^ ]*)\s*([^ ]*)$/);
+                       total = parseInt(values[1]);
+                   } else if (line.match(/^MemAvailable/)) {
+                       values = line.match(/^MemAvailable:\s*([^ ]*)\s*([^ ]*)$/);
+                       available = parseInt(values[1]);
+                   }
+               }
+
+               used = total - available;
+               this.usepercent = (100 * used / total).toFixed(1);
+           });
+       }
     update() {
       this.area.queue_draw();
     }
