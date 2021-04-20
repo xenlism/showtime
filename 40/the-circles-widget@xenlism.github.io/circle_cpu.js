@@ -106,9 +106,23 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
       this.xbox.spacing = 0;
       this.xbox.border_width = 0;
       this.xbox.orientation = Gtk.Orientation.VERTICAL;
-      this.cpustat = 0.0;
-      this.cpuTotOld = 0.0;
-      this.idleOld = 0.0;
+      this.max = 100;
+      this.cpuid = -1;
+      this.gtop = new GTop.glibtop_cpu();
+      this.last = [0, 0, 0, 0, 0];
+      this.current = [0, 0, 0, 0, 0];
+      try {
+          this.total_cores = GTop.glibtop_get_sysinfo().ncpu;
+          if (this.cpuid === -1) {
+              this.max *= this.total_cores;
+          }
+      } catch (e) {
+          this.total_cores = 1;
+          global.logError(e)
+      }
+      this.last_total = 0;
+      this.usage = [0, 0, 0, 1, 0];
+      this.cpustat = 0;
       this.area = this.buildArea();
       this.xbox.add(this.area);
       //this.wrapevbox.add(this.box);
@@ -208,29 +222,54 @@ const CircleCPU = GObject.registerClass(class CircleCPUWin extends Gtk.Window {
           this.draw(ctx, height, width);
     }
     get_cpu_usage() {
-           let cpu_text;
-           let file = Gio.file_new_for_path('/proc/stat');
-           file.load_contents_async(null, (source, result) => {
-               let contents = source.load_contents_finish(result)[1];
-               let lines = ByteArray.toString(contents).split('\n');
+           GTop.glibtop_get_cpu(this.gtop);
+           // display global cpu usage on 1 graph
+           if (this.cpuid === -1) {
+               this.current[0] = this.gtop.user;
+               this.current[1] = this.gtop.sys;
+               this.current[2] = this.gtop.nice;
+               this.current[3] = this.gtop.idle;
+               this.current[4] = this.gtop.iowait;
+               this.delta = (this.gtop.total - this.last_total) / (100 * this.total_cores);
 
-               let entry = lines[0].trim().split(/\s+/);
-               let cpuTot = 0;
-               let idle = parseInt(entry[4]);
+               if (this.delta > 0) {
+                   for (let i = 0; i < 5; i++) {
+                       this.usage[i] = Math.round((this.current[i] - this.last[i]) / this.delta);
+                       this.last[i] = this.current[i];
+                   }
+                   this.last_total = this.gtop.total;
+               } else if (this.delta < 0) {
+                   this.last = [0, 0, 0, 0, 0];
+                   this.current = [0, 0, 0, 0, 0];
+                   this.last_total = 0;
+                   this.usage = [0, 0, 0, 1, 0];
+               }
+           } else {
+               this.current[0] = this.gtop.xcpu_user[this.cpuid];
+               this.current[1] = this.gtop.xcpu_sys[this.cpuid];
+               this.current[2] = this.gtop.xcpu_nice[this.cpuid];
+               this.current[3] = this.gtop.xcpu_idle[this.cpuid];
+               this.current[4] = this.gtop.xcpu_iowait[this.cpuid];
+               this.delta = (this.gtop.xcpu_total[this.cpuid] - this.last_total) / 100;
 
-               // user sys nice idle iowait
-               for (let i = 1; i < 5; i++)
-                   cpuTot += parseInt(entry[i]);
-
-               let delta = cpuTot - this.cpuTotOld;
-               let deltaIdle = idle - this.idleOld;
-
-               let cpuCurr = 100 * (delta - deltaIdle) / delta;
-
-               this.cpuTotOld = cpuTot;
-               this.idleOld = idle;
-               this.cpustat = cpuCurr.toFixed(1);
-           });
+               if (this.delta > 0) {
+                   for (let i = 0; i < 5; i++) {
+                       this.usage[i] = Math.round((this.current[i] - this.last[i]) / this.delta);
+                       this.last[i] = this.current[i];
+                   }
+                   this.last_total = this.gtop.xcpu_total[this.cpuid];
+               } else if (this.delta < 0) {
+                   this.last = [0, 0, 0, 0, 0];
+                   this.current = [0, 0, 0, 0, 0];
+                   this.last_total = 0;
+                   this.usage = [0, 0, 0, 1, 0];
+               }
+           }
+           if (this.cpuid === -1) {
+               this.cpustat = (((100 * this.total_cores) - this.usage[3]) / this.total_cores).toFixed(1);
+           } else {
+               this.cpustat = ((100 - this.usage[3])).toFixed(1);
+           }
        }
 
     update() {
